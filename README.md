@@ -12,6 +12,8 @@
 
 **Proposed Goals:**
 
+- [ ] Explore Fundamentals of WebAssembly
+- [ ] Configure local environment for running WebAseembly
 - [ ] Write Basic Function in `MiniC`
 - [ ] Write Basic Function `.wat`
   - [ ] Breakdown syntax of `S-Expressions`

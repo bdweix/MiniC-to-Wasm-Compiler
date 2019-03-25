@@ -24,7 +24,7 @@
   - [x] Step 7 - Static Type Checking
   - [x] Step 8 - Checking for Main
   - [x] Step 9 - Naming
-  - [ ] Step 10 - Lifting
+  - [x] Step 10 - Lifting
   - [ ] Step 11 - Copying
   - [ ]  Step 12 - Quads
   - [ ] Step 13 - MIPS Codestream

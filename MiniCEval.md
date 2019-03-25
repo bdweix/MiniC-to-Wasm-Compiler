@@ -192,6 +192,8 @@ We now check if inside the Ast we have a function called `main`. We are mapping 
 
 ### Part 9 - Naming
 
+Goal of Naming: the goal of the naming phase it provide unique variable names for all of the variables in the code. We do keep original variable names provided by the programmer for easier debugging and readability.
+
 ```ocaml
   (* Perform the naming source-to-source transformation.*)
   let named = Name.translate ast in
@@ -311,6 +313,8 @@ List.fold_right2 createTreeRight vars rands
            ; body= to_term expr_var })
 ```
 
+**Questions for Muller: A) We didn't want to run this on the entire program because we want to keep some of the original variable names for debugging purposes? B) I'm struggling to understand what is actually happening in the above statement and how `List.fold_right2` words. Docs for my reference: <http://caml.inria.fr/pub/docs/manual-ocaml/libref/List.html>**
+
 Which takes three inputs, `createTreeRight vars rands Ast.let(…)`. This generally appears to be mapping all of the variables inside of a `Let` statement with new variable names for all of their rands.
 
 The outputed `basic.mc` code after the naming phase is now. As we can see, the original variable names are preserved and each variable (rands) inside of the let statement has been named.
@@ -332,9 +336,114 @@ int main()
 }
 ```
 
-**Questions for Muller: A) We didn't want to run this on the entire program because we want to keep some of the original variable names for debugging purposes? B) I'm struggling to understand what is actually happening in the above statement and how `List.fold_right2` words. Docs for my reference: <http://caml.inria.fr/pub/docs/manual-ocaml/libref/List.html>**
-
 ### Part 10 - Lifting
 
+Goal of Lifting: **unsure, need formal definition. Seems to be a flattening of the functions**
+
 We now passed the `ast` that the naming phase returns into the `lifting` function.
+
+```ocaml
+  (* Remove nested let-defintions, another source-to-source translation. *)
+  let lifted = Lift.translate named in
+  let _ = Debug.debugInfo (dbgOut, "After the lifting phase:", lifted) in
+```
+
+Inside the `List.ml` file we have the function called `translate`:
+
+```ocaml
+let rec translate (Ast.Program procedures) =
+  Ast.Program (List.map translateProcedure procedures)
+```
+
+Similar to naming, we get all of the procedures out of the Ast. These are mapped over the `translateProcedure` function:
+
+```ocaml
+and translateProcedure (Ast.Procedure {id; formals; typ; body}) =
+  Ast.Procedure {id; formals; typ; body = translateStatement body}
+```
+
+This function gives us access to the body of the procedures, which we run through the `translateStatement` function:
+
+```ocaml
+and translateStatement statement =
+  match statement with
+  | Block {decls; statements} ->
+      Block {decls; statements= List.map translateStatement statements}
+  | Assign {id; expr} -> Assign {id; expr= translateTerm expr}
+  | While {expr; statement} ->
+      While {expr= translateTerm expr; statement= translateStatement statement}
+  | IfS {expr; thn; els} ->
+      IfS
+        { expr= translateTerm expr
+        ; thn= translateStatement thn
+        ; els= translateStatement els }
+  | Call {rator; rands} -> Call {rator; rands= List.map translateTerm rands}
+  | Print term -> Print (translateTerm term)
+  | Return term -> Return (translateTerm term)
+```
+
+The ultimate goal of this function is to reduce the statements down to either statements or/then terms that we can run through the `translateTerm` function:
+
+```ocaml
+and translateTerm term =
+  match term with
+  | Id _ -> term
+  | Literal _ -> term
+  | App {rator; rands} -> App {rator; rands= List.map translateTerm rands}
+  | If {expr; thn; els} ->
+      If
+        { expr= translateTerm expr
+        ; thn= translateTerm thn
+        ; els= translateTerm els }
+  | And {left; right} -> failwith "lift: cannot have an And node"
+  (* And {left = translateTerm left; right = translateTerm right} *)
+  | Or {left; right} -> failwith "lift: cannot have an Or node"
+  (* OR {left = translateTerm left; right = translateTerm right} *)
+  | Let {decl; body} -> (
+    match decl with
+    | ValBind {bv; defn= Let {decl; body= innerBody}} ->
+        translateTerm
+          (Let {decl; body= Let {decl= ValBind {bv; defn= innerBody}; body}})
+    | ValBind _ -> Let {decl; body= translateTerm body} )
+
+```
+
+The bulk of this phase occure in the final `Let {decl; body} -> …` pat of this function. As we discussed in class this lifting code from this:
+
+```ocaml
+let x1 = (let x2 = e2 in e3) in e4
+```
+
+To now (after the lifting):
+
+```ocaml
+let x2 = e2 in let x1 = e3 in e4
+```
+
+Technically the `And` and `Or` parts of the above code should never be hit, otherwise we do have the failwith cases.
+
+After the lifting is done on all of the code, we get the resulting:
+
+```c
+int main()
+{
+  int a;
+  a =   let 
+      x0 : int = 1
+      x1 : int = 2
+      x2 : int = +(x0, x1)
+  in
+    x2
+  ;
+  print a;
+  return
+    a
+}
+```
+
+**Note: this is the same exact code as after the naming phase. The simplicity of the function doesn't highlight the importance of lifting, need to update to something better**
+
+**Question for Muller: I don't totally understand the need and/or goal of lifting**
+
+
 

@@ -14,7 +14,20 @@
 
 - [x] Explore Fundamentals of WebAssembly
 - [x] Configure local environment for running WebAseembly
-- [ ] Write Basic Function in `MiniC`
+- [ ] Break down `MiniC`
+  - [x] Step 1 - Setup
+  - [x] Step 2 - System Args
+  - [x] Step 3 - Debugging Setup
+  - [x] Step 4 - Enviromnent Creation
+  - [x] Step 5 - Parsing/Lexing
+  - [x] Step 6 - Debugging File
+  - [x] Step 7 - Static Type Checking
+  - [x] Step 8 - Checking for Main
+  - [x] Step 9 - Naming
+  - [ ] Step 10 - Lifting
+  - [ ] Step 11 - Copying
+  - [ ]  Step 12 - Quads
+  - [ ] Step 13 - MIPS Codestream
 - [ ] Write Basic Function `.wat`
   - [ ] Breakdown syntax of `S-Expressions`
   - [ ] Competently write by hand `.wat` functions 

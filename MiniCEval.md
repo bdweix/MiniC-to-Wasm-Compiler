@@ -445,7 +445,7 @@ int main()
 
 **Question: I don't totally understand the need and/or goal of lifting. Are we just using unqiue naming to flatten out nested let statements to make it easier to make into assembly? And we're able to do this because we are controlling the naming so we can ensure that all of the scoping is entact, despite it technically being a bit different than the original implementation?**
 
-### Part 12 - Copy Phase
+### Part 11 - Copy Phase
 
 Goal: to remove  unnescesary 'propogated' copies of code
 
@@ -507,7 +507,7 @@ let x = e1 in e2[y:=x]
 
 **Question: unsure on some of the implications of differences above and what that means for our language. Also the substitute function seems very redundant as it shares almost all of the code with `translateTerm` function - is it possible to more closely combine them?**
 
-### Part 13 - Control Phase & Quads (more details coming, work in progress)
+### Part 12 - Control Phase & Quads (more details coming, work in progress)
 
 Goal: this is a translation to the language of quads, which is much closer to assmebly. (We will be converting this to `.wat`)
 
@@ -585,12 +585,12 @@ instructions=
             ; mark endL ]
 ```
 
-### Part 14 - CodeGen (more details coming, work in progress)
+### Part 13 - CodeGen (more details coming, work in progress)
 
 - It seems `mips.ml` is a series of modules that are then implemented by CodeGen, where most of the transformation happens
 - The emit function takes the code stream and writes it out to file
 
-### Our Part 14:
+### Our Part 13:
 
 - We will rewrite `codegen.ml` and most likely make a `s-expr.ml` that defines the appropiate outputs to generate S-Expression text
 

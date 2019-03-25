@@ -313,6 +313,25 @@ List.fold_right2 createTreeRight vars rands
 
 Which takes three inputs, `createTreeRight vars rands Ast.let(…)`. This generally appears to be mapping all of the variables inside of a `Let` statement with new variable names for all of their rands.
 
+The outputed `basic.mc` code after the naming phase is now. As we can see, the original variable names are preserved and each variable (rands) inside of the let statement has been named.
+
+```c
+int main()
+{
+  int a;
+  a =   let 
+      x0 : int = 1
+      x1 : int = 2
+      x2 : int = +(x0, x1)
+  in
+    x2
+  ;
+  print a;
+  return
+    a
+}
+```
+
 **Questions for Muller: A) We didn't want to run this on the entire program because we want to keep some of the original variable names for debugging purposes? B) I'm struggling to understand what is actually happening in the above statement and how `List.fold_right2` words. Docs for my reference: <http://caml.inria.fr/pub/docs/manual-ocaml/libref/List.html>**
 
 ### Part 10 - Lifting

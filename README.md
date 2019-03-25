@@ -40,5 +40,5 @@
   - [ ] Compile `.wat` into .`wasm` (in any tool chain)
   - [ ] Compile `.wat` into `.wasm` (in OCaml toolchain)
 
-- 
+
 

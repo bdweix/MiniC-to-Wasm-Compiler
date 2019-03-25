@@ -42,7 +42,7 @@ include $(OCAMLMAKEFILE)
 
 This is what ultimately creates our executuble `mc` file that we run for the program. We can see in our sources input we define all of the files, and the program presumably starts in the `compile.ml` file. 
 
-**Question for Muller: does this just run through each source and run everything, but compile.mc is the only file with an actual function call so it starts the process then?**
+**Question: does this just run through each source and run everything, but compile.mc is the only file with an actual function call so it starts the process then?**
 
 ## Compile.ml
 
@@ -56,7 +56,7 @@ let n = compilerOptions () in
 
 This runs the compilerOptions() function which counts the number of system arguments given to the program and returns the position where the source file should be. If there are two items, then in position 0 is the program invocation and position 1 is the position of the source file. If there are 3 arguments we check whether it's one of the supported parameters (-nocheck or -t). If it is, it appears that we are modifying some global variables (`typeChecking` in the current `compile.ml` file, and `debugLexer` in the `Debug.ml` file). These are both declared as pointers with the `ref` keyword. If there are more than 3 arguments or no match, then the program fails immediately with an argument error.
 
-**Question for Muller, why isn't compilerOptions (and other helpers) in the .mli file?**
+**Question, why isn't compilerOptions (and other helpers) in the .mli file?**
 
 ### Part 2 - System Args
 
@@ -86,7 +86,7 @@ This runs the function `make` in the `Env.ml` file and passes in `Staticbasis.op
 
 Overall this is the paramter than is going to be passed to our Env to create the enviroment. This adheres closely to our defined grammer and typing checking we have layed out.
 
-**Question for Muller: where specifically in our grammar is this? Trying to visual the translation from definition to code here…is this all just matching up with the operator definition and then typing checking with injection tags?**
+**Question: where specifically in our grammar is this? Trying to visual the translation from definition to code here…is this all just matching up with the operator definition and then typing checking with injection tags?**
 
 **Personal note: practice the conversions with this again, review problem on the test**
 
@@ -102,7 +102,7 @@ Now inside of the Env make function we have:
 
 This is slightly difficult to understand, but it's seemingly created a key value map between the Basis.primOps and the values we are inputting (remembering that these values are the `Staticbasis.operatorTypes` from above. As we look into the `Basis.ml` file we see a list of the same operations we have defined in Staticbasis.
 
-**Question for Muller: why is there the seperation between `Staticbasis.ml` and `Basis.ml`. Is this because `Basis.ml` is going to be applied both for the static and dynamic implementations? To make sure I understand, your comment says that `makeBasis` can be applied to `list implementationsOfPrimitives` to make the dynamic basis. This dynamic basis is basically a type checker/guarentee for the functions that a user may be defining? And the static basis is for the built in operators that we already know?**
+**Question: why is there the seperation between `Staticbasis.ml` and `Basis.ml`. Is this because `Basis.ml` is going to be applied both for the static and dynamic implementations? To make sure I understand, your comment says that `makeBasis` can be applied to `list implementationsOfPrimitives` to make the dynamic basis. This dynamic basis is basically a type checker/guarentee for the functions that a user may be defining? And the static basis is for the built in operators that we already know?**
 
 ### Part 5 - Parsing/Lexing
 
@@ -140,7 +140,7 @@ let _ = Debug.debugInfo(dbgOut, "The input program is:", ast) in
 
 The notation `let _` simply denotes that we know we are not going to use whatever is returned, but we need to assign it some name. I believe this line only matters if Debug is set to false, in which case it will simply write out to the debug file immediately with just the name of the file. 
 
-**Questions for Muller:**
+**Questions:**
 
 **A) it seems when I try to run the command: `./mc -t basic.mc` I'm getting the error `Fatal error: exception Failure("main() not found")`**
 
@@ -167,7 +167,7 @@ The notation `let _` simply denotes that we know we are not going to use whateve
              ()) in
 ```
 
-**Question for Muller: I must be reading this wrong, but it looks like the if statement is only proceeding if "typeChecking" is equal to `false`, whereas if it is equal to `true` then it will jump to else clause which says "No type checking"?** 
+**Question: I must be reading this wrong, but it looks like the if statement is only proceeding if "typeChecking" is equal to `false`, whereas if it is equal to `true` then it will jump to else clause which says "No type checking"?** 
 
 Here we are checking if the variable we originally set in Part 1 is false, if it is false then due to the bang operator (not sure the OCaml term). If it's true, it will jump to the else clause which does nothing. Inside of the message variable we are passing the `typeEnv` we built in Part 4 along with the `ast` we made in Part 5 into the `Static.typeCheck` funciton.
 
@@ -186,7 +186,7 @@ The `Static.typeCheck` function is where all of the type checking occurs that we
   in
 ```
 
-**Question for Muller: what does that first line "Program ps" mean, it's changing the type of the ast into a Program? Why can't we just use the ast and change the function to accept an ast, not a program? Additionally, why must the formals be true/what is that representing?"**
+**Question: what does that first line "Program ps" mean, it's changing the type of the ast into a Program? Why can't we just use the ast and change the function to accept an ast, not a program? Additionally, why must the formals be true/what is that representing?"**
 
 We now check if inside the Ast we have a function called `main`. We are mapping the `Program ps` over the lambda function to get out every procedures `ids` which are then checked with the name "main". Assuming it is true, do nothing, otherwise failwith it not being found.
 
@@ -238,7 +238,7 @@ and translateStatement statement =
 
 This function takes the statement and matches it with the potential statement types defined in `Ast.ml`, which are Block, Assign, While, IfS, Call, Print, Return. Each of these statements are then either compromised of a `term` or `statement`, which are applied to the functions `translateTerm` and `translateStatement`, respectively.
 
-**Question for Muller: we seem to be calling `translateStatement` within `translateStatement`, but `translateStatement` isn't defined as being recursive?**
+**Question: we seem to be calling `translateStatement` within `translateStatement`, but `translateStatement` isn't defined as being recursive?**
 
 `translateTerm`:
 
@@ -313,7 +313,7 @@ List.fold_right2 createTreeRight vars rands
            ; body= to_term expr_var })
 ```
 
-**Questions for Muller: A) We didn't want to run this on the entire program because we want to keep some of the original variable names for debugging purposes? B) I'm struggling to understand what is actually happening in the above statement and how `List.fold_right2` words. Docs for my reference: <http://caml.inria.fr/pub/docs/manual-ocaml/libref/List.html>**
+**Questions: A) We didn't want to run this on the entire program because we want to keep some of the original variable names for debugging purposes? B) I'm struggling to understand what is actually happening in the above statement and how `List.fold_right2` words. Docs for my reference: <http://caml.inria.fr/pub/docs/manual-ocaml/libref/List.html>**
 
 Which takes three inputs, `createTreeRight vars rands Ast.let(…)`. This generally appears to be mapping all of the variables inside of a `Let` statement with new variable names for all of their rands.
 
@@ -441,9 +441,162 @@ int main()
 }
 ```
 
-**Note: this is the same exact code as after the naming phase. The simplicity of the function doesn't highlight the importance of lifting, need to update to something better**
+**Personal Note: this is the same exact code as after the naming phase. The simplicity of the function doesn't highlight the importance of lifting, need to update to something with nested let statements**
 
-**Question for Muller: I don't totally understand the need and/or goal of lifting**
+**Question: I don't totally understand the need and/or goal of lifting. Are we just using unqiue naming to flatten out nested let statements to make it easier to make into assembly? And we're able to do this because we are controlling the naming so we can ensure that all of the scoping is entact, despite it technically being a bit different than the original implementation?**
 
+### Part 12 - Copy Phase
 
+Goal: to remove  unnescesary 'propogated' copies of code
+
+```ocaml
+  let copy = Copyprop.translate lifted in
+  let _ = Debug.debugInfo (dbgOut, "After the copyprop phase:", copy) in
+```
+
+We now pass the lifted asm into the Copyprop.translate method. It is extremely similar to the previous translate code compositions and I will avoid the duplication of code here. The key part of this phase is the matching statement for `Let` inside of the `translateTerm` function:
+
+```ocaml
+  | Ast.Let {decl; body} -> (
+    match decl with
+    | Ast.ValBind {bv= Ast.({id; typ= _}); defn= Ast.Id keep} ->
+        translateTerm (substitute keep id body)
+    | Ast.ValBind _ -> Ast.Let {decl; body= translateTerm body} )
+```
+
+**Personal Note: understand the difference between the two match statements here**
+
+We are taking any declarations and then rerunning them through the `translateTerm` function but first passing the `keep id body` through the `substitute` function: 
+
+```ocaml
+let substitute x (*for*) y term =
+  let rec translateTerm term =
+    match term with
+    | Ast.Id z as i -> (
+      match Symbol.compare y z with 0 -> Ast.Id x | _ -> i )
+    | Ast.Literal _ as w -> w
+    | Ast.If {expr; thn; els} ->
+        Ast.If
+          { expr= translateTerm expr
+          ; thn= translateTerm thn
+          ; els= translateTerm els }
+    (* The following two cases can't happen because Or and And were eliminated in the naming phase. *)
+    | Ast.Or _ -> raise (Failure "Cannot happen.")
+    | Ast.And _ -> raise (Failure "Cannot happen.")
+    | Ast.App {rator; rands} ->
+        Ast.App {rator; rands= List.map translateTerm rands}
+    | Ast.Let {decl= Ast.ValBind {bv; defn}; body} ->
+        Ast.Let
+          { decl= Ast.ValBind {bv; defn= translateTerm defn}
+          ; body= translateTerm body }
+  in
+  translateTerm term
+```
+
+The majority of the substitude function is self explanatory, with the key part being the Symbol match statement. This will check if the Ast.Id is the same than the inputted `id` and if not then will return the `keep`, otherwise return itself. As a result we turn the following code:
+
+```ocaml
+let x = e1 in let y = x in e2
+```
+
+Into the following (after copy prop):
+
+```ocaml
+let x = e1 in e2[y:=x]
+```
+
+**Question: unsure on some of the implications of differences above and what that means for our language. Also the substitute function seems very redundant as it shares almost all of the code with `translateTerm` function - is it possible to more closely combine them?**
+
+### Part 13 - Control Phase & Quads (more details coming, work in progress)
+
+Goal: this is a translation to the language of quads, which is much closer to assmebly. (We will be converting this to `.wat`)
+
+Taking our output from Part 12, we now run the quads translation:
+
+```ocaml
+  let quads = Control.translate copy in
+  let _ = Util.writeln (dbgOut, 0, "\nAfter the control phase:") in
+  let _ = Quads.dumpInstructionStream quads in
+```
+
+After getting the procedures from this new `asm`, we are going to map them over the following function:
+
+```ocaml
+and translateProcedure (A.Procedure {id; typ; formals; body}) =
+  let entry = Label.fromString (Symbol.format id) in
+  let formals = List.map A.(fun bv -> bv.id) formals in
+  let code = translateStatement body
+  in
+  Q.Procedure {entry; formals; code}
+```
+
+In the language of Quads Procedure we seem to have the following:
+
+- Entry - each procedures id
+- Formals - unsure specifically what this is…we are mapping formals and returning an Ast of something
+- Code - run the body of the code through the `translateStatement`
+
+Together these make up a Quads.Procedure, which is defined as the following:
+
+```ocaml
+type procedure   = Procedure of { entry   : Label.t
+                                ; formals : Symbol.t list
+                                ; code    : instruction list
+                                }
+```
+
+Quads as a langauge is a series of these procedures, each procedure has one label, a list of formals, and an instruction list.
+
+Every statement in our `ast` must match up with one of the following **(examples coming for each)**:
+
+- `Block`
+- `Assign`
+- `While`
+- `Ifs`
+- `Call`
+- `Print`
+- `Return`
+
+These can then be (usually) broken further down into expressions with the following types **(examples coming for each)**:
+
+- `Id`
+- `Literal`
+- `App` (x3)
+- `If`
+- `And`
+- `Or`
+- `Let`
+
+The result of this distilation is simple a series of 
+
+**Question: what exactly are formals?** Can we go through the above types? Let's also break down these types further and how this is implemented inside of the `translateExpression` code:
+
+```ocaml
+instructions=
+          List.concat
+            [ expr.instructions
+            ; switch
+            ; thn.instructions
+            ; passId thn
+            ; jump endL
+            ; mark switchL
+            ; els.instructions
+            ; passId els
+            ; mark endL ]
+```
+
+### Part 14 - CodeGen (more details coming, work in progress)
+
+- It seems `mips.ml` is a series of modules that are then implemented by CodeGen, where most of the transformation happens
+- The emit function takes the code stream and writes it out to file
+
+### Our Part 14:
+
+- We will rewrite `codegen.ml` and most likely make a `s-expr.ml` that defines the appropiate outputs to generate S-Expression text
+
+- This S-Expression text will go from `.wat` to `.wasm`
+
+- Better map out all of the components of Quads, match them up better with S-Expressions then
+
+  
 

@@ -4,6 +4,8 @@ Web Assmebly files are stored as `.wasm` files. However, Web Assmebly also offer
 
 **Note: the following notes have been assembled from various articles, sometimes copy-pasted with attributes provided. Intent is on a cohesive compilation.**
 
+Running code by hand online here: <https://webassembly.studio/>
+
 ## S-Expressions ([source](https://developer.mozilla.org/en-US/docs/WebAssembly/Understanding_the_text_format))
 
 S-expressions are a set of trees, and each node in the tree goes inside of a pair of parentheses. While a bit verbose for readability, these paratheneses make the underlying tree structure extremely clear. Let's take a look at some basic `.wat` code:
@@ -25,11 +27,15 @@ Web Assembly currently has four types:
 
 ## Types of Nodes
 
-module, functions, globals, exports, data (memory), tables and elem, type (for type checking)
+**More notes coming soon**
 
-## Common Commands
-
-
+- Module
+- Functions
+- Globals
+- Exports
+- Data (memory)
+- Tables + Elem
+- Type
 
 ## Calling WASM from Javascript
 
@@ -261,7 +267,133 @@ else
 end
 ```
 
+## Common Commands
 
+The following is all copy/pasted from [this source](https://webassembly.org/docs/semantics/). Note: this source is technically outdated, but provides a concise overview of types and available commands.
 
+**Variables**
 
+- `get_local`: read the current value of a local variable
+- `set_local`: set the current value of a local variable
+- `tee_local`: like `set_local`, but also returns the set value
+
+**Global Variables:**
+
+- `get_global`: get the current value of a global variable
+- `set_global`: set the current value of a global variable
+
+**Control Constructs:**
+
+- `nop`: no operation, no effect
+- `block`...`end`: the beginning and end of a block construct, a sequence of instructions with a label at the end
+- `loop`…`end`: a block with a label at the beginning which may be used to form loops
+- `if`…`end`: the beginning of an if construct with an implicit *then* block
+- `else`…`end`: marks the else block of an if
+- `br`: branch to a given label in an enclosing construct
+- `br_if`: conditionally branch to a given label in an enclosing construct
+- `br_table`: a jump table which jumps to a label in an enclosing construct
+- `return`: return zero or more values from this function
+- `end`: an instruction that marks the end of a block, loop, if, or function
+
+**Effects of Control Instructions on Stack:**
+
+- `return` - pops return value(s) off the stack and returns from the current function (pretty sure only one return type is supported)
+- `block` or `loop` - no effect on the stack
+- `end` of a `block` or `loop` - no effect on the stack (Unsure what this means: Executing the `end` of the implicit block for a function body pops the return value(s) (if any) off the stack and returns from the function.)
+- `if` - pops an `i32` condition off of the stack and either continues or ends
+- `else` - sets the program counter to after the corresponding `end` of the `if`
+- branches and `loop` - they discard any new values pushed onto the stack in the loop and set the program countrer to the start of the loop
+- `drop` - explicitly pop a value from the stack
+
+**Constants:**
+
+- `i32.const` - produce the value of an i32 immediate
+- `i64.const`-  produce the value of an i64 immediate
+- `f32.const` - produce the value of an f32 immediate
+- `f64.const` - produce the value of an f64 immediate
+
+**32-Bit/64-Bit Integer Operators**:
+
+Integer operators are signed, unsigned, or sign-agnostic. Signed operators use two’s complement signed integer representation. There are the same operators for both 32-bit and 64-bit, just change the prefix.
+
+- `i32.add`: sign-agnostic addition
+- `i32.sub`: sign-agnostic subtraction
+- `i32.mul`: sign-agnostic multiplication (lower 32-bits)
+- `i32.div_s`: signed division (result is truncated toward zero)
+- `i32.div_u`: unsigned division (result is [floored](https://en.wikipedia.org/wiki/Floor_and_ceiling_functions))
+- `i32.rem_s`: signed remainder (result has the sign of the dividend)
+- `i32.rem_u`: unsigned remainder
+- `i32.and`: sign-agnostic bitwise and
+- `i32.or`: sign-agnostic bitwise inclusive or
+- `i32.xor`: sign-agnostic bitwise exclusive or
+- `i32.shl`: sign-agnostic shift left
+- `i32.shr_u`: zero-replicating (logical) shift right
+- `i32.shr_s`: sign-replicating (arithmetic) shift right
+- `i32.rotl`: sign-agnostic rotate left
+- `i32.rotr`: sign-agnostic rotate right
+- `i32.eq`: sign-agnostic compare equal
+- `i32.ne`: sign-agnostic compare unequal
+- `i32.lt_s`: signed less than
+- `i32.le_s`: signed less than or equal
+- `i32.lt_u`: unsigned less than
+- `i32.le_u`: unsigned less than or equal
+- `i32.gt_s`: signed greater than
+- `i32.ge_s`: signed greater than or equal
+- `i32.gt_u`: unsigned greater than
+- `i32.ge_u`: unsigned greater than or equal
+- `i32.clz`: sign-agnostic count leading zero bits (All zero bits are considered leading if the value is zero)
+- `i32.ctz`: sign-agnostic count trailing zero bits (All zero bits are considered trailing if the value is zero)
+- `i32.popcnt`: sign-agnostic count number of one bits
+- `i32.eqz`: compare equal to zero (return 1 if operand is zero, 0 otherwise)
+
+**32-Bit/64-Bit Floating Operators:**
+
+- `f32.add`: addition
+- `f32.sub`: subtraction
+- `f32.mul`: multiplication
+- `f32.div`: division
+- `f32.abs`: absolute value
+- `f32.neg`: negation
+- `f32.copysign`: copysign
+- `f32.ceil`: ceiling operator
+- `f32.floor`: floor operator
+- `f32.trunc`: round to nearest integer towards zero
+- `f32.nearest`: round to nearest integer, ties to even
+- `f32.eq`: compare ordered and equal
+- `f32.ne`: compare unordered or unequal
+- `f32.lt`: compare ordered and less than
+- `f32.le`: compare ordered and less than or equal
+- `f32.gt`: compare ordered and greater than
+- `f32.ge`: compare ordered and greater than or equal
+- `f32.sqrt`: square root
+- `f32.min`: minimum (binary operator); if either operand is NaN, returns NaN
+- `f32.max`: maximum (binary operator); if either operand is NaN, returns NaN
+
+**Datatype Conversions, truncations, Reinterpretations, Promotions, and Demotions**
+
+- `i32.wrap/i64`: wrap a 64-bit integer to a 32-bit integer
+- `i32.trunc_s/f32`: truncate a 32-bit float to a signed 32-bit integer
+- `i32.trunc_s/f64`: truncate a 64-bit float to a signed 32-bit integer
+- `i32.trunc_u/f32`: truncate a 32-bit float to an unsigned 32-bit integer
+- `i32.trunc_u/f64`: truncate a 64-bit float to an unsigned 32-bit integer
+- `i32.reinterpret/f32`: reinterpret the bits of a 32-bit float as a 32-bit integer
+- `i64.extend_s/i32`: extend a signed 32-bit integer to a 64-bit integer
+- `i64.extend_u/i32`: extend an unsigned 32-bit integer to a 64-bit integer
+- `i64.trunc_s/f32`: truncate a 32-bit float to a signed 64-bit integer
+- `i64.trunc_s/f64`: truncate a 64-bit float to a signed 64-bit integer
+- `i64.trunc_u/f32`: truncate a 32-bit float to an unsigned 64-bit integer
+- `i64.trunc_u/f64`: truncate a 64-bit float to an unsigned 64-bit integer
+- `i64.reinterpret/f64`: reinterpret the bits of a 64-bit float as a 64-bit integer
+- `f32.demote/f64`: demote a 64-bit float to a 32-bit float
+- `f32.convert_s/i32`: convert a signed 32-bit integer to a 32-bit float
+- `f32.convert_s/i64`: convert a signed 64-bit integer to a 32-bit float
+- `f32.convert_u/i32`: convert an unsigned 32-bit integer to a 32-bit float
+- `f32.convert_u/i64`: convert an unsigned 64-bit integer to a 32-bit float
+- `f32.reinterpret/i32`: reinterpret the bits of a 32-bit integer as a 32-bit float
+- `f64.promote/f32`: promote a 32-bit float to a 64-bit float
+- `f64.convert_s/i32`: convert a signed 32-bit integer to a 64-bit float
+- `f64.convert_s/i64`: convert a signed 64-bit integer to a 64-bit float
+- `f64.convert_u/i32`: convert an unsigned 32-bit integer to a 64-bit float
+- `f64.convert_u/i64`: convert an unsigned 64-bit integer to a 64-bit float
+- `f64.reinterpret/i64`: reinterpret the bits of a 64-bit integer as a 64-bit float
 

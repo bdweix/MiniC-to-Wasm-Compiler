@@ -38,3 +38,9 @@ S Expression:
 Project Goals:
 
 - Be able to turn S expression into web assemble (https://developer.mozilla.org/en-US/docs/WebAssembly/Text_format_to_wasm)
+
+WAT Info:
+- http://webassembly.github.io/spec/core/text/conventions.html
+- http://webassembly.github.io/spec/core/appendix/index-instructions.html
+- http://webassembly.github.io/spec/core/text/conventions.html
+- https://webassembly.github.io/wabt/demo/wat2wasm/

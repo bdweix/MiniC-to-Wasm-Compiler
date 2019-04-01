@@ -29,13 +29,15 @@ Web Assembly currently has four types:
 
 **More notes coming soon**
 
-- Module
-- Functions
-- Globals
-- Exports
-- Data (memory)
-- Tables + Elem
-- Type
+- Module - the main node
+- Functions - function declaration
+- Import - import declaration
+- Exports - export declaration
+- Globals - globals, can be immutable or mutable
+- Code - function bodies
+- Data (memory) - used for storing more comlex data types
+- Tables + Elem - declaring and using the indirect function table
+- Type - function signature declarations, I believe this is used by indirect function calls to asset type
 
 ## Calling WASM from Javascript
 
@@ -50,9 +52,25 @@ WebAssembly.instantiateStreaming(fetch('add.wasm'))
 
 ## Stack Machine
 
-*I'm not entirely sure on the accuracy of this, pulling from the Mozilla site on this*
+Examples copied from source, great memory diagrams here as well: <https://rsms.me/wasm-intro#import_section>
 
 Web Assembly execution ultimately runs a stack machine where ever instruction pushes and/or pops a certain number of values (of the above types) to and from the stack. The beginning of every function starts with an empty stack. At the end of the function, there should only be one item on the stack, and that item should match the return type. If there is no return type, then the stack must be empty. The code should not compile if this isn't true.
+
+```asm
+get_local 0  // push parameter 0 on stack (our dividend)
+i64.const 2  // push constant int64 "2" on stack (our divisor)
+i64.div_u    // unsigned division pushes result onto stack
+end          // ends function, resulting in one i64 (top of stack)
+```
+
+Another example:
+
+```asm
+i32.const 123  // for the purpose of demonstration, push "123" to the stack
+set_local 0    // pop "123" off of the stack and store it into local #0
+// use the stack for other operations...
+get_local 0    // "123" is pushed to the top of the stack
+```
 
 ## Functions
 

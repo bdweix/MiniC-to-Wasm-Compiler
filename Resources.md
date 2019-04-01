@@ -10,16 +10,17 @@ Demos:
 
 - WebAsssembly Video Editor (https://d2jta7o2zej4pf.cloudfront.net/)
 
-WASM Fiddle: 
+WASM Fiddle:
 
 - https://wasdk.github.io/WasmFiddle/?tz9tu
 - https://wasdk.github.io/WasmFiddle/?ttxwx
 - https://github.com/WebAssembly/spec
-- web assembly S Expression syntax 
-- S Expression - learn that 
-- mini c while loops if statements variables recursive functions 
+- web assembly S Expression syntax
+- S Expression - learn that
+- mini c while loops if statements variables recursive functions
 - https://blog.scottlogic.com/2018/04/26/webassembly-by-hand.html
 - https://webassembly.studio/?f=ivzzdwn7fcn (this is great!!)
+- https://webassembly.js.org/
 
 PHP and WebAssembly:
 

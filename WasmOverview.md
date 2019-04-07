@@ -60,6 +60,8 @@ Main Web Assembly grammar can be found here (quite similar!): <https://webassemb
 
 List of Web Assmebly instructions can be found here: <https://webassembly.github.io/spec/core/appendix/index-instructions.html>
 
+Although Web Assembly is significantly more complex than the grammar above, this is a reduced version that is applicable to the outputs of `Quads`:
+
 ```latex
 valType 	::= i32 | i64
 i32 		::= digit | digit i32
@@ -90,9 +92,6 @@ op			::=
 
 exports		::= (export "name" (func name))
 ```
-
-Although Web Assembly is significantly more complex than the grammar above, this is a reduced version that is applicable to the outputs of `Quads`.
-
 Note: there are a few errors to be corrected in the grammar. A name can be any string pre-pended by a `$` (dollar sign). Exports require the name without a dollar sign in quotation marks. 
 
 ## S-Expressions ([source](https://developer.mozilla.org/en-US/docs/WebAssembly/Understanding_the_text_format))

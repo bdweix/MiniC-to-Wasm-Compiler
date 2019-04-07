@@ -1,5 +1,7 @@
 # Web Assembly by Hand
 
+Note: outdated, using for reference. Most notes copied into Mini Web Assmebly Overview
+
 Web Assmebly files are stored as `.wasm` files. However, Web Assmebly also offers a more readable, human friendly format called `.wat`. This format is in [S-expressions](https://en.wikipedia.org/wiki/S-expression).
 
 **Note: the following notes have been assembled from various articles, sometimes copy-pasted with attributes provided. Intent is on a cohesive compilation.**
@@ -129,10 +131,8 @@ Let's look at a simple function that adds together to numbers:
   (func (param $lhs i32) (param $rhs i32) (result i32)
     get_local $lhs
     get_local $rhs
-    i32.add))
+    i32.add))**
 ```
-
-**Questions: when we pass paramters and variables to a function, where are they put? Is there a special register stack or something?**
 
 This function takes into two paramters called `$lhs` and `$rhs`, both of type `i32`. It returns a single value or type `i32`.  We then run `get_local` function which according to the [documentation](http://webassembly.github.io/spec/core/exec/instructions.html) says:
 
@@ -186,8 +186,6 @@ The `call` command allows you to call another function directly in the same modu
 ```
 
 ### Declaring Globals
-
-***Need more notes about this***
 
 We can export globals for use in both Javascript and `wasm` functions. To do so, use the following syntax:
 

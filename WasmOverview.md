@@ -370,7 +370,7 @@ end
 
 One of the easiest ways to run Web Assmebly `.wat` files is directly in your browser in a program called [Web Assmebly Studio](https://webassembly.studio/). Start by creating a new "Empty Wat Project". Your set up should look like this:
 
-![studio1](WebAssembly/source_imgs/studio1.png)
+![studio1](/source_imgs/studio1.png)
 
 On our left hand side you can click between the different files. They start with a very basic add funciton. To run this function, click the "Build & Run" button in the top toolbar. As we discussed earlier, we must export the functions so they are callable via Javascript. If you click into the `main.js` file you will see the following Javascript:
 

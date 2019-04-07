@@ -68,7 +68,7 @@ i32 		::= digit | digit i32
 digit 		::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 name		::= $string | i32 | ϵ
 
-module 		::= ( node ) | ( node node )
+module 		::= ( node ) | ( node ) module
 node 		::= ( func ) | ( export )
 func		::= name result params locals body
 result		::= ( result valType )

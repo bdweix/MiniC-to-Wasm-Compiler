@@ -60,6 +60,8 @@ Main Web Assembly grammar can be found here (quite similar!): <https://webassemb
 
 List of Web Assmebly instructions can be found here: <https://webassembly.github.io/spec/core/appendix/index-instructions.html>
 
+Although Web Assembly is significantly more complex than the grammar above, this is a reduced version that is applicable to the outputs of `Quads`:
+
 ```latex
 valType 	::= i32 | i64
 i32 		::= digit | digit i32
@@ -90,9 +92,6 @@ op			::=
 
 exports		::= (export "name" (func name))
 ```
-
-Although Web Assembly is significantly more complex than the grammar above, this is a reduced version that is applicable to the outputs of `Quads`.
-
 Note: there are a few errors to be corrected in the grammar. A name can be any string pre-pended by a `$` (dollar sign). Exports require the name without a dollar sign in quotation marks. 
 
 ## S-Expressions ([source](https://developer.mozilla.org/en-US/docs/WebAssembly/Understanding_the_text_format))
@@ -370,7 +369,7 @@ end
 
 One of the easiest ways to run Web Assmebly `.wat` files is directly in your browser in a program called [Web Assmebly Studio](https://webassembly.studio/). Start by creating a new "Empty Wat Project". Your set up should look like this:
 
-![studio1](/Users/bdweix/Code/projects/web-assembly/WebAssembly/source_imgs/studio1.png)
+![studio1](/source_imgs/studio1.png)
 
 On our left hand side you can click between the different files. They start with a very basic add funciton. To run this function, click the "Build & Run" button in the top toolbar. As we discussed earlier, we must export the functions so they are callable via Javascript. If you click into the `main.js` file you will see the following Javascript:
 

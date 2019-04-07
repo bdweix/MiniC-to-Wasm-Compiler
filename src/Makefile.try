@@ -1,0 +1,14 @@
+SOURCES = util.ml symbol.ml label.ml typ.ml basis.ml env.ml ast.ml \
+		      lexer.ml debug.ml parser.ml \
+          staticbasis.ml static.ml \
+		      name.ml lift.ml copyprop.ml \
+          quads.ml control.ml copyprop_quads.ml \
+		      mips.ml dynamicbasis.ml codegen.ml \
+          try.ml
+
+PACKS = unix
+INCDIRS = ~/cs3366/lib/
+LIBS = code
+RESULT = try
+OCAMLMAKEFILE = ~/.opam/default/lib/ocaml-makefile/OCamlMakefile
+include $(OCAMLMAKEFILE)

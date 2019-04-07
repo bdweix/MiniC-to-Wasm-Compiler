@@ -1,0 +1,115 @@
+mc: 19:23 4.2.2019. Compiling main.mc in debug mode.
+
+The input program is:
+
+int main()
+{
+  int x;
+  x = +(+(1, 2), 3);
+  return
+    x
+}
+
+Type environment is:
+% : int * int -> int
+* : int * int -> int
+** : int * int -> int
++ : int * int -> int
+- : int * int -> int
+/ : int * int -> int
+< : int * int -> bool
+<= : int * int -> bool
+<> : int * int -> bool
+== : int * int -> bool
+> : int * int -> bool
+>= : int * int -> bool
+main :  -> int
+not : bool -> bool
+
+The program is well-typed.
+
+
+After the naming phase:
+
+int main()
+{
+  int x;
+  x =   let 
+      x0 : int =
+        let 
+            x3 : int = 1
+            x4 : int = 2
+            x5 : int = +(x3, x4)
+        in
+          x5
+      x1 : int = 3
+      x2 : int = +(x0, x1)
+  in
+    x2
+  ;
+  return
+    x
+}
+
+After the lifting phase:
+
+int main()
+{
+  int x;
+  x =   let 
+      x3 : int = 1
+      x4 : int = 2
+      x5 : int = +(x3, x4)
+      x0 : int = x5
+      x1 : int = 3
+      x2 : int = +(x0, x1)
+  in
+    x2
+  ;
+  return
+    x
+}
+
+After the copyprop phase:
+
+int main()
+{
+  int x;
+  x =   let 
+      x3 : int = 1
+      x4 : int = 2
+      x5 : int = +(x3, x4)
+      x1 : int = 3
+      x2 : int = +(x5, x1)
+  in
+    x2
+  ;
+  return
+    x
+}
+
+After the control phase:
+
+main:	()
+	x = 0
+	x3 = 1
+	x4 = 2
+	x5 = x3 + x4
+	x1 = 3
+	x2 = x5 + x1
+	x = x2
+	x6 = x
+	return x6
+
+CG environment for main is:
+x : -7
+x1 : -5
+x2 : -6
+x3 : -2
+x4 : -3
+x5 : -4
+x6 : -8
+
+Emitting MIPS assembley code to main.asm
+
+

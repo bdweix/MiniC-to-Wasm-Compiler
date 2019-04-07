@@ -14,7 +14,7 @@
 
 - [x] Explore Fundamentals of WebAssembly -  [Fundamentals.md](Fundamentals.md) 
 - [x] Configure local environment for running WebAseembly -[LocalEnviromnent.md](LocalEnviromnent.md) 
-- [ ] Break down `MiniC -` [MiniCEval.md](MiniCEval.md) 
+- [X] Break down `MiniC -` [MiniCEval.md](MiniCEval.md) 
   - [x] Step 1 - Setup
   - [x] Step 2 - System Args
   - [x] Step 3 - Debugging Setup
@@ -26,18 +26,18 @@
   - [x] Step 9 - Naming
   - [x] Step 10 - Lifting
   - [x] Step 11 - Copying
-  - [ ]  Step 12 - Control Phase & Quads
-  - [ ] Step 13 - MIPS Codestream
-  - [ ] Step 13W - WASM Codestream
-- [ ] Write Basic Function `.wat`
-  - [ ] Breakdown syntax of `S-Expressions`
-  - [ ] Competently write by hand `.wat` functions 
-- [ ] Convert functions from `C` to `.wat` by hand
-- [ ] Map out corresponding types between `Quads` and `S-Expressions`
-- [ ] Compile `MiniC` assembly into `.wat`
-  - [ ] Understand and implement `OCaml` processes for reading in files (`.asm`)
-  - [ ] Understand and implement `OCaml` processes for writing out files (`.wat`)
-  - [ ] Compile `.asm` into `.wat` 
+  - [X]  Step 12 - Control Phase & Quads
+  - [X] Step 13 - MIPS Codestream
+  - [X] Step 13W - WASM Codestream
+- [X] Write Basic Function `.wat`
+  - [X] Breakdown syntax of `S-Expressions`
+  - [X] Competently write by hand `.wat` functions 
+- [X] Convert functions from `C` to `.wat` by hand
+- [X] Map out corresponding types between `Quads` and `S-Expressions`
+- [X] Compile `MiniC` assembly into `.wat`
+  - [X] Understand and implement `OCaml` processes for reading in files (`.asm`)
+  - [X] Understand and implement `OCaml` processes for writing out files (`.wat`)
+  - [X] Compile `.asm` into `.wat` 
   - [ ] Compile `.wat` into .`wasm` (in any tool chain)
   - [ ] Compile `.wat` into `.wasm` (in OCaml toolchain)
 

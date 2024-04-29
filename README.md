@@ -1,4 +1,4 @@
-# Web Assembly
+# MiniC -> Wasm Compiler
 
 ### Note: this is an old repository from my senior year of college "Programming Languages" course. As a final project, I built a (very simple) compiler to turn `MiniC` code into web assembly. 
 

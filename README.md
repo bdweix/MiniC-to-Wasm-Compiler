@@ -1,5 +1,7 @@
 # Web Assembly
 
+### Note: this is an old repository from my senior year of college "Programming Languages" course. As a final project, I built a (very simple) compiler to turn `MiniC` code into web assembly. 
+
 **Goal**: compile `MiniC` assembly code into Web Assembly `wasm`.
 
 **Proposed Solution**: all web assembly code can be represented in a more readble, `.wat` text format. The proposed solution will involve compiling `MIPS` code generated from the `MiniC` compiler, into `S-Expressions`. The fundamental units of WASM are modules, and can be thought of as a "tree of nodes that describe the modules structure and code" ([source](https://developer.mozilla.org/en-US/docs/WebAssembly/Understanding_the_text_format)). We can build a compiler that will compile the list of assembly instructions into a list of `S-Expressions` . This `.wat` file can then be converted to `.wasm` using existing toolchains. Once complete a user would be able to run the code below and have an outputted `program.asm`, `program.dbg`, and `program.wat`:
